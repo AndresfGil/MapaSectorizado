@@ -2,7 +2,7 @@ import { Grid } from '@mui/material';
 import { Fragment, useState, useEffect } from 'react';
 import { GoogleMap, useLoadScript, Polygon } from '@react-google-maps/api';
 
-export const GeneralMap = () => {
+export const MedellinMap = () => {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_API_KEY,
   });

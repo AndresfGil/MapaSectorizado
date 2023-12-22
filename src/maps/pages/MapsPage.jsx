@@ -1,23 +1,23 @@
 import React from 'react'
-import { GeneralMap, MapView } from '../views'
 import { JournalLayout } from '../layout/MapLayout'
 import { useSelector } from 'react-redux'
+import { MedellinMap } from '../views/MedellinMap'
+import { Profile } from '../views/Profile'
+import { GeneralMap } from '../views/GeneralMap'
 
 
 export const MapsPage = () => {
 
-  const { active } = useSelector(state => state.map)
+  const { generalMapActive, medellinMapActive, profileActive } = useSelector(state => state.map)
 
   return (
 
     <JournalLayout>
 
-      {
-        (!!active) 
-        ? <MapView /> 
-        : <GeneralMap />
-      }
-        
+      {generalMapActive && <GeneralMap />}
+      {medellinMapActive && <MedellinMap />}
+      {profileActive && <Profile />}
+
     </JournalLayout>
 
      

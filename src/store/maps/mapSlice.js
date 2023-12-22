@@ -3,11 +3,25 @@ import { createSlice } from '@reduxjs/toolkit';
 export const mapSlice = createSlice({
     name: 'map',
     initialState: {
-        active: false,
+        generalMapActive: true,
+        medellinMapActive: false,
+        profileActive: false,
     },
     reducers: {
-        setActiveMap: ( state ) => {
-            state.active = true
+        setActiveGeneralMap: ( state ) => {
+            state.generalMapActive = true,
+            state.medellinMapActive = false,
+            state.profileActive = false
+        },
+        setActiveMedellinMap: ( state ) => {
+            state.generalMapActive = false,
+            state.medellinMapActive = true,
+            state.profileActive = false
+        },
+        setProfile: ( state ) => {
+            state.generalMapActive = false,
+            state.medellinMapActive = false,
+            state.profileActive = true
         },
     }
 });
@@ -15,5 +29,7 @@ export const mapSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const { 
-    setActiveMap 
+    setActiveGeneralMap,
+    setActiveMedellinMap,
+    setProfile
 } =  mapSlice.actions;

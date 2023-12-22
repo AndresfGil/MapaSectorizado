@@ -2,19 +2,25 @@ import { Box, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, Lis
 import MapIcon from '@mui/icons-material/Map' 
 import { useSelector } from 'react-redux';
 
- import { LogoutOutlined, SpaceBar, SpaceBarOutlined, SpaceDashboardOutlined } from '@mui/icons-material';
+ import { DataSaverOffOutlined, LogoutOutlined, SpaceBar, SpaceBarOutlined, SpaceDashboardOutlined } from '@mui/icons-material';
  import { startLogout } from '../../store/auth';
  import { useDispatch } from 'react-redux';
 
  import logo from '../../resources/map2.png'
-import { startActiveMap } from '../../store/maps/thunks';
+import { startActiveGeneralMap, startActiveMedellinMap, startActiveProfile,  } from '../../store/maps/thunks';
 
  export const Sidebar = ({ drawerWidth = 200 }) => {
 
     const dispatch = useDispatch();
 
-    const activateMap = () => {
-        dispatch (startActiveMap() );
+    const activateGeneralMap = () => {
+        dispatch (startActiveGeneralMap() );
+    };
+    const activateMedellinMap = () => {
+        dispatch (startActiveMedellinMap() );
+    };
+    const activateProfile = () => {
+        dispatch (startActiveProfile() );
     };
 
      const onLogout = () => {
@@ -41,8 +47,30 @@ import { startActiveMap } from '../../store/maps/thunks';
                  </Toolbar>
                  <Divider />
 
+
+                 <Toolbar 
+                 onClick={activateProfile}
+                 >
+                    <IconButton 
+                     color='white'
+                 >
+                     <DataSaverOffOutlined />Mi perfil
+                 </IconButton>
+                    
+                 </Toolbar>
+                 <Divider />
+
                  <ListItemButton
-                    onClick={activateMap}
+                    onClick={activateGeneralMap}
+                 >
+                    <ListItemIcon>
+                        <MapIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Mapa General" />
+                </ListItemButton>
+
+                 <ListItemButton
+                    onClick={activateMedellinMap}
                  >
                     <ListItemIcon>
                         <MapIcon />

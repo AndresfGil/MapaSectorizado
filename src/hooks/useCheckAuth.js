@@ -20,17 +20,17 @@ export const useCheckAuth = () => {
             if ( !user ) return dispatch( logout() );
        
   
-        // Aquí accedemos a la base de datos para obtener los datos del usuario
-                const usersCollectionRef = collection(FirebaseDB, 'users');
-                const userDocRef = doc(usersCollectionRef, user.uid);
-                const userDocSnapshot = await getDoc(userDocRef);
+        // // Aquí accedemos a la base de datos para obtener los datos del usuario
+        //         const usersCollectionRef = collection(FirebaseDB, 'users');
+        //         const userDocRef = doc(usersCollectionRef, user.uid);
+        //         const userDocSnapshot = await getDoc(userDocRef);
   
   
-            const userData = userDocSnapshot.data();
-            const { lastname, age, photoURL } = userData;
+        //     const userData = userDocSnapshot.data(); , photoURL, lastname, age
+        //     const { lastname, age, photoURL } = userData;
 
             const { uid, email, displayName } = user;
-            dispatch( setActiveUser({ uid, email, displayName, photoURL, lastname, age }) );
+            dispatch( setActiveUser({ uid, email, displayName }) );
         })
     }, []);
 
