@@ -8,15 +8,21 @@ import { useForm } from '../../hooks';
 import { startCreatingUserWithEmailPassword } from '../../store/auth';
 
 const formData = {
+  displayName: '',
+  lastname: '',
+  age: '',
+  photoURL: '',
   email: '',
   password: '',
-  displayName: ''
 }
 
 const formValidations = {
   email: [ (value) => value.includes('@'), 'El correo debe de tener una @'],
   password: [ (value) => value.length >= 6, 'El password debe de tener más de 6 letras.'],
   displayName: [ (value) => value.length >= 1, 'El nombre es obligatorio.'],
+  lastname: [ (value) => value.length >= 1, 'El apellido es obligatorio.'],
+  age: [ (value) => value.length >= 1, 'La edad es obligatoria.'],
+  photoURL: [ (value) => value.length >= 5, 'Debe agregar una foto desde un URL valido.']
 }
 
 export const RegisterPage = () => {
@@ -28,8 +34,8 @@ export const RegisterPage = () => {
   const isCheckingAuthentication = useMemo( () => status === 'checking', [status]);
 
   const { 
-    formState, displayName, email, password, onInputChange,
-    isFormValid, displayNameValid, emailValid, passwordValid, 
+    formState, displayName, email, password, lastname, age, photoURL, onInputChange,
+    isFormValid, displayNameValid, lastnameValid, ageValid, photoURLValid, emailValid, passwordValid, 
   } = useForm( formData, formValidations );
 
   const onSubmit = ( event ) => {
@@ -49,15 +55,57 @@ export const RegisterPage = () => {
            
             <Grid item xs={ 12 } sx={{ mt: 2 }}>
               <TextField 
-                label="Nombre completo" 
+                label="Nombre" 
                 type="text" 
-                placeholder='Nombre completo' 
+                placeholder='Nombre' 
                 fullWidth
                 name="displayName"
                 value={ displayName }
                 onChange={ onInputChange }
                 error={ !!displayNameValid && formSubmitted }
                 helperText={ displayNameValid }
+              />
+            </Grid>
+
+            <Grid item xs={ 12 } sx={{ mt: 2 }}>
+              <TextField 
+                label="Apellido" 
+                type="text" 
+                placeholder='Apellido' 
+                fullWidth
+                name="lastname"
+                value={ lastname }
+                onChange={ onInputChange }
+                error={ !!lastnameValid && formSubmitted }
+                helperText={ lastnameValid }
+              />
+            </Grid>
+
+            <Grid item xs={ 12 } sx={{ mt: 2 }}>
+              <TextField 
+                label="Edad" 
+                type="number" 
+                placeholder='Edad' 
+                fullWidth
+                name="age"
+                value={ age }
+                onChange={ onInputChange }
+                error={ !!ageValid && formSubmitted }
+                helperText={ ageValid }
+              />
+            </Grid>
+
+            <Grid item xs={ 12 } sx={{ mt: 2 }}>
+              <TextField 
+                label="Foto de perfil" 
+                type="text" 
+                placeholder='Foto de perfil' 
+                fullWidth
+                name="photoURL"
+                value={ photoURL }
+                onChange={ onInputChange }
+                error={ !!photoURLValid && formSubmitted }
+                helperText={ photoURLValid }
               />
             </Grid>
 

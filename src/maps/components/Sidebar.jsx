@@ -2,7 +2,7 @@ import { Box, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, Lis
 import MapIcon from '@mui/icons-material/Map' 
 import { useSelector } from 'react-redux';
 
- import { LogoutOutlined } from '@mui/icons-material';
+ import { LogoutOutlined, SpaceBar, SpaceBarOutlined, SpaceDashboardOutlined } from '@mui/icons-material';
  import { startLogout } from '../../store/auth';
  import { useDispatch } from 'react-redux';
 
@@ -21,7 +21,7 @@ import { startActiveMap } from '../../store/maps/thunks';
          dispatch( startLogout() );
      }
 
-     const { displayName } = useSelector( state => state.auth );
+     const { displayName, lastname } = useSelector( state => state.auth );
 
      return (
          <Box
@@ -39,18 +39,6 @@ import { startActiveMap } from '../../store/maps/thunks';
                  <Toolbar >
                     <img src={logo} alt="Logo del mapa" width={100} height={100} />
                  </Toolbar>
-                 <Divider />
-
-                 <ListItem>
-                    <Typography 
-                    variant='h6' 
-                    noWrap component='div'
-                    >
-                         { displayName }
-                     </Typography>
-                </ListItem>
-
-    
                  <Divider />
 
                  <ListItemButton

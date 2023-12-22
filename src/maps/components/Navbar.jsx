@@ -1,9 +1,15 @@
 
  import { AppBar, Grid, IconButton, Toolbar, Typography } from '@mui/material';
  import { LogoutOutlined, MenuOutlined } from '@mui/icons-material';
+ import { useSelector } from 'react-redux';
+
 
 
  export const NavBar = ({ drawerWidth = 240 }) => {
+
+    const { displayName, lastname, photoURL } = useSelector( state => state.auth );
+
+    const profileimg = <img src="linkimg" alt="perfil foto" width={10} height={10} />
 
    return (
      <AppBar 
@@ -23,7 +29,19 @@
              </IconButton>
 
              <Grid container direction='row' justifyContent='space-between' alignItems='center'>
-                 <Typography variant='h6' noWrap component='div'> Mapa </Typography>
+                 <Typography 
+                    variant='h6' 
+                    noWrap component='div'
+                    >
+                        { displayName } { lastname }
+                     </Typography>
+
+                     <Typography 
+                    variant='h6' 
+                    noWrap component='div'
+                    >
+                        { profileimg }
+                     </Typography>
                  
              </Grid>
 
