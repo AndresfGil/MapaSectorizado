@@ -6,6 +6,7 @@ export const mapSlice = createSlice({
         generalMapActive: true,
         medellinMapActive: false,
         profileActive: false,
+        isModalOpen: false
     },
     reducers: {
         setActiveGeneralMap: ( state ) => {
@@ -18,10 +19,11 @@ export const mapSlice = createSlice({
             state.medellinMapActive = true,
             state.profileActive = false
         },
-        setProfile: ( state ) => {
-            state.generalMapActive = false,
-            state.medellinMapActive = false,
-            state.profileActive = true
+        setModalOpen: ( state ) => {
+            state.isModalOpen = true
+        },
+        setModalClose: ( state ) => {
+            state.isModalOpen = false
         },
     }
 });
@@ -31,5 +33,6 @@ export const mapSlice = createSlice({
 export const { 
     setActiveGeneralMap,
     setActiveMedellinMap,
-    setProfile
+    setModalOpen,
+    setModalClose
 } =  mapSlice.actions;

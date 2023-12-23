@@ -2,14 +2,23 @@ import { Box, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, Lis
 import MapIcon from '@mui/icons-material/Map' 
 import { useSelector } from 'react-redux';
 
- import { DataSaverOffOutlined, LogoutOutlined, SpaceBar, SpaceBarOutlined, SpaceDashboardOutlined } from '@mui/icons-material';
+ import { DataSaverOffOutlined, EditAttributesOutlined, EditNoteOutlined, LogoutOutlined, SpaceBar, SpaceBarOutlined, SpaceDashboardOutlined } from '@mui/icons-material';
  import { startLogout } from '../../store/auth';
  import { useDispatch } from 'react-redux';
 
  import logo from '../../resources/map2.png'
-import { startActiveGeneralMap, startActiveMedellinMap, startActiveProfile,  } from '../../store/maps/thunks';
+import { startActiveGeneralMap, startActiveMedellinMap  } from '../../store/maps/thunks';
+import { InfoModal } from './InfoModal';
+import { useModalStore } from '../../hooks/useModalStore';
+
 
  export const Sidebar = ({ drawerWidth = 200 }) => {
+
+    const { openInfoModal } = useModalStore();
+
+    const onClick = ( event ) => {
+        openInfoModal()
+    }
 
     const dispatch = useDispatch();
 
@@ -19,17 +28,13 @@ import { startActiveGeneralMap, startActiveMedellinMap, startActiveProfile,  } f
     const activateMedellinMap = () => {
         dispatch (startActiveMedellinMap() );
     };
-    const activateProfile = () => {
-        dispatch (startActiveProfile() );
-    };
 
-     const onLogout = () => {
+    const onLogout = () => {
          dispatch( startLogout() );
      }
 
-     const { displayName, lastname } = useSelector( state => state.auth );
-
      return (
+        <>
          <Box
              component='nav'
              sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
@@ -49,12 +54,13 @@ import { startActiveGeneralMap, startActiveMedellinMap, startActiveProfile,  } f
 
 
                  <Toolbar 
-                 onClick={activateProfile}
+                 
                  >
                     <IconButton 
                      color='white'
+                     onClick={onClick}
                  >
-                     <DataSaverOffOutlined />Mi perfil
+                    <EditNoteOutlined />  Editar datos
                  </IconButton>
                     
                  </Toolbar>
@@ -84,9 +90,10 @@ import { startActiveGeneralMap, startActiveMedellinMap, startActiveProfile,  } f
                  >
                      <LogoutOutlined />
                  </IconButton>
-
+                 
              </Drawer>
-
          </Box>
+         <InfoModal></InfoModal>
+         </>
      )
  }

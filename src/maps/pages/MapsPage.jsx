@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import { MedellinMap } from '../views/MedellinMap'
 import { Profile } from '../views/Profile'
 import { GeneralMap } from '../views/GeneralMap'
+import { InfoModal } from '../components'
 
 
 export const MapsPage = () => {
@@ -17,7 +18,7 @@ export const MapsPage = () => {
       {generalMapActive && <GeneralMap />}
       {medellinMapActive && <MedellinMap />}
       {profileActive && <Profile />}
-
+      
     </JournalLayout>
 
      

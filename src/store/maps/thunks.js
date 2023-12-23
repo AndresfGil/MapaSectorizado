@@ -1,4 +1,4 @@
-import { setActiveGeneralMap, setActiveMedellinMap, setProfile,  } from "./mapSlice";
+import { setActiveGeneralMap, setActiveMedellinMap  } from "./mapSlice";
 
 
 export const startActiveGeneralMap = () => (dispatch) => {
@@ -7,8 +7,4 @@ export const startActiveGeneralMap = () => (dispatch) => {
 
 export const startActiveMedellinMap = () => (dispatch) => {
     dispatch( setActiveMedellinMap() );
-}
-
-export const startActiveProfile = () => (dispatch) => {
-    dispatch( setProfile() );
 }

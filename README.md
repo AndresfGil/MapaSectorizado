@@ -22,3 +22,6 @@ npm install @emotion/react@^11.11.1 @emotion/styled@^11.11.0
 
 ## Instalar SweetAlert2
 npm install sweetalert2@^11.10.1
+
+## Instalar React-modal
+npm i react-modal

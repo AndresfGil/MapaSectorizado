@@ -20,7 +20,7 @@ export const startCreatingUserWithEmailPassword = ({ email, password, displayNam
         if ( !result.ok ) return dispatch( logout( result.errorMessage ) );
 
         console.log('Datos que se están pasando al Redux Store:', result);
-
+        dispatch( logout() )
     }
 
 }
