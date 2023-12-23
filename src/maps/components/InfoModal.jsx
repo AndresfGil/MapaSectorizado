@@ -6,6 +6,8 @@ import { useModalStore } from '../../hooks/useModalStore';
 import { useDispatch, useSelector } from 'react-redux';
 import { Alert, Button, Grid, TextField } from '@mui/material';
 import { useForm } from '../../hooks';
+import { startUpdatingUser } from "../../store/auth";
+import Swal from "sweetalert2";
 
 
 const formData = {
@@ -14,18 +16,17 @@ const formData = {
   age: '',
   photoURL: '',
   email: '',
-  password: '',
+  newPassword: '',
+  oldPassword: '',
 }
 
 const formValidations = {
   email: [ (value) => value.includes('@'), 'El correo debe de tener una @'],
-  password: [ (value) => value.length >= 6, 'El password debe de tener más de 6 letras.'],
-  displayName: [ (value) => value.length >= 1, 'El nombre es obligatorio.'],
+  newPassword: [ (value) => value.length >= 6, 'El password debe de tener más de 6 letras.'],
   lastname: [ (value) => value.length >= 1, 'El apellido es obligatorio.'],
   age: [ (value) => value.length >= 1, 'La edad es obligatoria.'],
   photoURL: [ (value) => value.length >= 5, 'Debe agregar una foto desde un URL valido.']
 }
-
 
 const customStyles = {
     content: {
@@ -38,6 +39,7 @@ const customStyles = {
     },
   };
 Modal.setAppElement('#root');
+
   
 
 export const InfoModal = () => {
@@ -56,15 +58,35 @@ export const InfoModal = () => {
   const [formSubmitted, setFormSubmitted] = useState(false);
 
   const { 
-    formState, displayName, email, password, lastname, age, photoURL, onInputChange,
-    isFormValid, displayNameValid, lastnameValid, ageValid, photoURLValid, emailValid, passwordValid, 
+    formState, displayName, email, newPassword, oldPassword, lastname, age, photoURL, onInputChange,
+    isFormValid, displayNameValid, lastnameValid, ageValid, photoURLValid, emailValid, newPasswordValid,
   } = useForm( formData, formValidations );
 
-  const onSubmit = ( event ) => {
+  const onSubmit = async (event) => {
     event.preventDefault();
     setFormSubmitted(true);
-
-  }
+  
+    if (!isFormValid) return;
+  
+    try {
+      await dispatch(startUpdatingUser(formState));
+  
+      Swal.fire({
+        icon: 'success',
+        title: '¡Actualización exitosa!',
+        text: 'Tu información se ha actualizado correctamente.',
+      });
+  
+      onCloseModal();
+    } catch (error) {
+      console.error('Error updating user:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hubo un error al actualizar tu información. Por favor, comprueba tu contraseña actual.',
+      });
+    }
+  };
 
 
 
@@ -154,15 +176,29 @@ export const InfoModal = () => {
 
             <Grid item xs={ 12 } sx={{ mt: 2 }}>
               <TextField 
-                label="Contraseña" 
+                label="Nueva Contraseña" 
                 type="password" 
-                placeholder='Contraseña' 
+                placeholder='Nueva Contraseña' 
                 fullWidth
-                name="password"
-                value={ password }
+                name="newPassword"
+                value={ newPassword }
                 onChange={ onInputChange }
-                error={ !!passwordValid && formSubmitted  }
-                helperText={ passwordValid }
+                error={ !!newPasswordValid && formSubmitted  }
+                helperText={ newPasswordValid }
+              />
+            </Grid>
+
+            <Grid item xs={ 12 } sx={{ mt: 2 }}>
+              <TextField 
+                label="Contraseña actual" 
+                type="password" 
+                placeholder='Contraseña actual' 
+                fullWidth
+                name="oldPassword"
+                value={ oldPassword }
+                onChange={ onInputChange }
+                error={ !!newPasswordValid && formSubmitted  }
+                helperText={ newPasswordValid }
               />
             </Grid>
             

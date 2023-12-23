@@ -10,6 +10,7 @@ export const authSlice = createSlice({
         lastname: null,
         age: null,
         photoURL: null,
+        password: null,
         errorMessage: null,
     },
     reducers: {

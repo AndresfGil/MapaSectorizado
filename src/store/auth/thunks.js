@@ -1,7 +1,8 @@
 import { loginWithEmailPassword, registerUserWithEmailPassword, logoutFirebase } from '../../firebase/providers';
 import { checkingCredentials, logout, login, setActiveUser } from './';
-import { FirebaseDB } from '../../firebase/config';
-import { collection, doc, getDoc } from 'firebase/firestore/lite';
+import { FirebaseDB, FirebaseAuth } from '../../firebase/config';
+import { collection, doc, getDoc, updateDoc} from 'firebase/firestore/lite';
+import { EmailAuthProvider, reauthenticateWithCredential, updateEmail, updatePassword } from 'firebase/auth';
 
 export const checkingAuthentication = () => {
     return async( dispatch ) => {
@@ -57,6 +58,70 @@ export const startLoginWithEmailPassword = ({ email, password, displayName, last
       }
     };
   };
+
+
+export const startUpdatingUser = ({ email, oldPassword, newPassword, displayName, lastname, age, photoURL }) => {
+  return async( dispatch, getState ) => {
+
+      const { uid } = getState().auth;
+
+      const userData = { email, newPassword, displayName, lastname, age, photoURL }
+
+      try {
+
+        const user = FirebaseAuth.currentUser;
+
+        //Correo
+        if (email && email !== user.email) {
+          // Vuelve a autenticar al usuario con su contraseña actual
+          const credentials = EmailAuthProvider.credential(user.email, oldPassword); // Reemplaza 'userProvidedPassword' con la contraseña proporcionada por el usuario
+          await reauthenticateWithCredential(user, credentials);
+  
+          // Actualiza la dirección de correo electrónico
+          await updateEmail(user, email);
+          console.log('Correo actualizado');
+        }
+
+        //Contraseña
+        if ( newPassword ) {
+           // Vuelve a autenticar al usuario con su contraseña actual
+          const credentials = EmailAuthProvider.credential(user.email, oldPassword); // Reemplaza 'userProvidedPassword' con la contraseña proporcionada por el usuario
+          await reauthenticateWithCredential(user, credentials);
+
+          await updatePassword(user, newPassword);
+          console.log('contraseña actulizada')
+        }
+
+        //Datos
+        const usersCollectionRef = collection(FirebaseDB, 'users');
+        const userDocRef = doc(usersCollectionRef, uid);
+        await updateDoc(userDocRef, {
+          displayName,
+          lastname,
+          age,
+          photoURL,
+        })
+        console.log('Datos actulizados')
+
+        dispatch(setActiveUser(userData));
+
+        return Promise.resolve();
+        
+      } catch (error) {
+        console.error('Error updating user:', error);
+        return Promise.reject(error);
+      }
+
+      
+}
+
+
+
+
+
+
+
+}
 
 
 export const startLogout = () => {
