@@ -15,24 +15,33 @@ export const useCheckAuth = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        
-        onAuthStateChanged( FirebaseAuth, async( user ) => {
-            if ( !user ) return dispatch( logout() );
-       
-  
-        // // Aquí accedemos a la base de datos para obtener los datos del usuario
-        //         const usersCollectionRef = collection(FirebaseDB, 'users');
-        //         const userDocRef = doc(usersCollectionRef, user.uid);
-        //         const userDocSnapshot = await getDoc(userDocRef);
-  
-  
-        //     const userData = userDocSnapshot.data(); , photoURL, lastname, age
-        //     const { lastname, age, photoURL } = userData;
-
-            const { uid, email, displayName } = user;
-            dispatch( setActiveUser({ uid, email, displayName }) );
-        })
-    }, []);
-
-    return status;
-}
+        const unsubscribe = onAuthStateChanged(FirebaseAuth, async (user) => {
+          if (!user) {
+            dispatch(logout());
+            return;
+          }
+    
+          // Acceder a la información proporcionada por Firebase Authentication
+          const { uid, email } = user;
+    
+          // Acceder a la información adicional en Firestore si está disponible
+          const usersCollectionRef = collection(FirebaseDB, 'users');
+          const userDocRef = doc(usersCollectionRef, uid);
+          const userDocSnapshot = await getDoc(userDocRef);
+    
+          if (userDocSnapshot.exists()) {
+            const userData = userDocSnapshot.data();
+            // Actualizar el estado del usuario con información de Firestore
+            dispatch(setActiveUser(userData));
+          } else {
+            // Si no hay datos en Firestore, actualizar solo con la información de Firebase Authentication
+            dispatch(setActiveUser({ uid, email }));
+          }
+        });
+    
+        // Limpieza del efecto al desmontar el componente
+        return () => unsubscribe();
+      }, [dispatch]);
+    
+      return status;
+    };

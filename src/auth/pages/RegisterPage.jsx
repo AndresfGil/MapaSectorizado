@@ -4,8 +4,8 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Alert, Button, Grid, Link, TextField, Typography } from '@mui/material';
 import { AuthLayout } from '../layout/AuthLayout';
 import { useForm } from '../../hooks';
-
 import { startCreatingUserWithEmailPassword } from '../../store/auth';
+
 
 const formData = {
   displayName: '',
@@ -45,6 +45,7 @@ export const RegisterPage = () => {
     if ( !isFormValid ) return;
 
     dispatch( startCreatingUserWithEmailPassword(formState) );
+
   }
 
   return (

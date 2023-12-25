@@ -21,7 +21,7 @@ const formData = {
 }
 
 const formValidations = {
-  email: [ (value) => value.includes('@'), 'El correo debe de tener una @'],
+  email: [ (value) => value.includes('@'), 'El correo debe de tener una @ y debe ser un correo activo'],
   newPassword: [ (value) => value.length >= 6, 'El password debe de tener más de 6 letras.'],
   lastname: [ (value) => value.length >= 1, 'El apellido es obligatorio.'],
   age: [ (value) => value.length >= 1, 'La edad es obligatoria.'],
@@ -74,10 +74,10 @@ export const InfoModal = () => {
       Swal.fire({
         icon: 'success',
         title: '¡Actualización exitosa!',
-        text: 'Tu información se ha actualizado correctamente.',
+        text: 'Recuerda verificar tu nuevo correo electronico.',
       });
-  
       onCloseModal();
+      
     } catch (error) {
       console.error('Error updating user:', error);
       Swal.fire({
@@ -162,7 +162,7 @@ export const InfoModal = () => {
 
             <Grid item xs={ 12 } sx={{ mt: 2 }}>
               <TextField 
-                label="Correo" 
+                label="Nuevo correo" 
                 type="email" 
                 placeholder='correo@google.com' 
                 fullWidth

@@ -2,7 +2,7 @@ import { loginWithEmailPassword, registerUserWithEmailPassword, logoutFirebase }
 import { checkingCredentials, logout, login, setActiveUser } from './';
 import { FirebaseDB, FirebaseAuth } from '../../firebase/config';
 import { collection, doc, getDoc, updateDoc} from 'firebase/firestore/lite';
-import { EmailAuthProvider, reauthenticateWithCredential, updateEmail, updatePassword } from 'firebase/auth';
+import { EmailAuthProvider, reauthenticateWithCredential, updatePassword, verifyBeforeUpdateEmail } from 'firebase/auth';
 
 export const checkingAuthentication = () => {
     return async( dispatch ) => {
@@ -15,7 +15,7 @@ export const checkingAuthentication = () => {
 export const startCreatingUserWithEmailPassword = ({ email, password, displayName, lastname, age, photoURL }) => {
     return async( dispatch ) => {
 
-        dispatch( checkingCredentials() );
+        //dispatch( checkingCredentials() );
 
         const result = await registerUserWithEmailPassword({ email, password, displayName, lastname, age, photoURL });
         if ( !result.ok ) return dispatch( logout( result.errorMessage ) );
@@ -74,12 +74,12 @@ export const startUpdatingUser = ({ email, oldPassword, newPassword, displayName
         //Correo
         if (email && email !== user.email) {
           // Vuelve a autenticar al usuario con su contraseña actual
-          const credentials = EmailAuthProvider.credential(user.email, oldPassword); // Reemplaza 'userProvidedPassword' con la contraseña proporcionada por el usuario
+          const credentials = EmailAuthProvider.credential(user.email, oldPassword);
           await reauthenticateWithCredential(user, credentials);
-  
-          // Actualiza la dirección de correo electrónico
-          await updateEmail(user, email);
-          console.log('Correo actualizado');
+    
+          // Envía una confirmación por correo electrónico al nuevo correo
+          await verifyBeforeUpdateEmail(user, email);
+          console.log('Correo actualizado, se ha enviado un correo de verificación.');
         }
 
         //Contraseña

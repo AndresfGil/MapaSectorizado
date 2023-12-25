@@ -7,6 +7,7 @@ import { AuthLayout } from '../layout/AuthLayout';
 
 import { useForm } from '../../hooks';
 import { startLoginWithEmailPassword } from '../../store/auth';
+import Swal from 'sweetalert2';
 
 
 const formData = {
@@ -24,11 +25,26 @@ export const LoginPage = () => {
 
   const isAuthenticating = useMemo( () => status === 'checking', [status]);
 
-  const onSubmit = ( event ) => {
+  const onSubmit = async( event ) => {
     event.preventDefault();
 
     // console.log({ email, password })
-    dispatch( startLoginWithEmailPassword({ email, password }) );
+    
+    try {
+      const result = await dispatch(startLoginWithEmailPassword({ email, password }));
+
+      // Verificar si la autenticación fue exitosa
+      if (!result.ok) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Correo o contraseña incorrecta',
+        });
+      }
+    } catch (error) {
+
+    }
+
   }
 
 
