@@ -1,99 +1,84 @@
-import { Box, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography, IconButton } from '@mui/material'
-import MapIcon from '@mui/icons-material/Map' 
-import { useSelector } from 'react-redux';
+import { InfoModal } from "./InfoModal";
+import { useDispatch } from "react-redux";
+import logo from "../../resources/map.png";
+import MapIcon from "@mui/icons-material/Map";
+import { startLogout } from "../../store/auth";
+import { useModalStore } from "../../hooks/useModalStore";
+import { EditNoteOutlined, LogoutOutlined } from "@mui/icons-material";
+import { startActiveGeneralMap, startActiveMedellinMap,} from "../../store/maps/thunks";
+import { Box, Divider, Drawer, ListItemButton, ListItemIcon, ListItemText, Toolbar, IconButton} from "@mui/material";
 
- import { DataSaverOffOutlined, EditAttributesOutlined, EditNoteOutlined, LogoutOutlined, SpaceBar, SpaceBarOutlined, SpaceDashboardOutlined } from '@mui/icons-material';
- import { startLogout } from '../../store/auth';
- import { useDispatch } from 'react-redux';
+export const Sidebar = ({ drawerWidth = 200 }) => {
 
- import logo from '../../resources/map2.png'
-import { startActiveGeneralMap, startActiveMedellinMap  } from '../../store/maps/thunks';
-import { InfoModal } from './InfoModal';
-import { useModalStore } from '../../hooks/useModalStore';
+  const { openInfoModal } = useModalStore();
 
+  const onClick = (event) => {
+    openInfoModal();
+  };
 
- export const Sidebar = ({ drawerWidth = 200 }) => {
+  const dispatch = useDispatch();
 
-    const { openInfoModal } = useModalStore();
+  const activateGeneralMap = () => {
+    dispatch(startActiveGeneralMap());
+  };
+  
+  const activateMedellinMap = () => {
+    dispatch(startActiveMedellinMap());
+  };
 
-    const onClick = ( event ) => {
-        openInfoModal()
-    }
+  const onLogout = () => {
+    dispatch(startLogout());
+  };
 
-    const dispatch = useDispatch();
+  return (
+    <>
+      <Box
+        component="nav"
+        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+      >
+        <Drawer
+          variant="permanent" // temporary
+          open
+          sx={{
+            display: { xs: "block" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
+          }}
+        >
+          <Toolbar>
+            <img src={logo} alt="Logo del mapa" width={100} height={100} />
+          </Toolbar>
+          <Divider />
 
-    const activateGeneralMap = () => {
-        dispatch (startActiveGeneralMap() );
-    };
-    const activateMedellinMap = () => {
-        dispatch (startActiveMedellinMap() );
-    };
+          <Toolbar>
+            <IconButton color="white" onClick={onClick}>
+              <EditNoteOutlined /> Editar datos
+            </IconButton>
+          </Toolbar>
+          <Divider />
 
-    const onLogout = () => {
-         dispatch( startLogout() );
-     }
+          <ListItemButton onClick={activateGeneralMap}>
+            <ListItemIcon>
+              <MapIcon />
+            </ListItemIcon>
+            <ListItemText primary="Mapa General" />
+          </ListItemButton>
 
-     return (
-        <>
-         <Box
-             component='nav'
-             sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-         >
-             <Drawer
-                 variant='permanent' // temporary
-                 open
-                 sx={{ 
-                     display: { xs: 'block' },
-                     '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth }
-                 }}
-             >
-                 <Toolbar >
-                    <img src={logo} alt="Logo del mapa" width={100} height={100} />
-                 </Toolbar>
-                 <Divider />
+          <ListItemButton onClick={activateMedellinMap}>
+            <ListItemIcon>
+              <MapIcon />
+            </ListItemIcon>
+            <ListItemText primary="Mapa Medellín" />
+          </ListItemButton>
 
-
-                 <Toolbar 
-                 
-                 >
-                    <IconButton 
-                     color='white'
-                     onClick={onClick}
-                 >
-                    <EditNoteOutlined />  Editar datos
-                 </IconButton>
-                    
-                 </Toolbar>
-                 <Divider />
-
-                 <ListItemButton
-                    onClick={activateGeneralMap}
-                 >
-                    <ListItemIcon>
-                        <MapIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Mapa General" />
-                </ListItemButton>
-
-                 <ListItemButton
-                    onClick={activateMedellinMap}
-                 >
-                    <ListItemIcon>
-                        <MapIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Mapa Medellín" />
-                </ListItemButton>
-
-                 <IconButton 
-                     color='error'
-                     onClick={ onLogout }
-                 >
-                     <LogoutOutlined />
-                 </IconButton>
-                 
-             </Drawer>
-         </Box>
-         <InfoModal></InfoModal>
-         </>
-     )
- }
+          <IconButton color="error" onClick={onLogout}>
+            <LogoutOutlined />
+          </IconButton>
+        </Drawer>
+      </Box>
+      <InfoModal></InfoModal>
+    </>
+  );
+};

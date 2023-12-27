@@ -1,25 +1,24 @@
-import { Toolbar } from '@mui/material';
-import { Box } from '@mui/system'
-import { NavBar, Sidebar } from '../components';
+import { Box } from "@mui/system";
+import { Toolbar } from "@mui/material";
+import { NavBar, Sidebar } from "../components";
 
 const drawerWidth = 200;
 
-export const JournalLayout = ({ children }) => {
+export const MapLayout = ({ children }) => {
+
   return (
-    <Box sx={{ display: 'flex' }} className='animate__animated animate__fadeIn animate__faster'>
+    <Box
+      sx={{ display: "flex" }}
+      className="animate__animated animate__fadeIn animate__faster"
+    >
+      <NavBar drawerWidth={drawerWidth} />
+      <Sidebar drawerWidth={drawerWidth} />
 
-        <NavBar drawerWidth={ drawerWidth } />
-        <Sidebar drawerWidth={ drawerWidth } />
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Toolbar />
 
-        <Box 
-            component='main'
-            sx={{ flexGrow: 1, p: 3 }}
-        >
-            <Toolbar />
-
-            { children }
-            
-        </Box>
+        {children}
+      </Box>
     </Box>
-  )
-}
+  );
+};

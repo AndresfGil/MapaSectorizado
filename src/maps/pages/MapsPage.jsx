@@ -1,23 +1,19 @@
-import React from 'react'
-import { JournalLayout } from '../layout/MapLayout'
-import { useSelector } from 'react-redux'
-import { MedellinMap } from '../views/MedellinMap'
-import { GeneralMap } from '../views/GeneralMap'
-
+import React from "react";
+import { useSelector } from "react-redux";
+import { GeneralMap } from "../views/GeneralMap";
+import { MapLayout } from "../layout/MapLayout";
+import { MedellinMap } from "../views/MedellinMap";
 
 export const MapsPage = () => {
-
-  const { generalMapActive, medellinMapActive, profileActive } = useSelector(state => state.map)
+  
+  const { generalMapActive, medellinMapActive } = useSelector(
+    (state) => state.map
+  );
 
   return (
-
-    <JournalLayout>
-
+    <MapLayout>
       {generalMapActive && <GeneralMap />}
       {medellinMapActive && <MedellinMap />}
-      
-    </JournalLayout>
-
-     
-  )
-}
+    </MapLayout>
+  );
+};

@@ -1,22 +1,22 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
-import { AuthRoutes } from '../auth/routes/AuthRoutes';
-
-import { CheckingAuth } from '../ui/';
-import { useCheckAuth } from '../hooks';
-import { MapsRoute } from '../maps/routes/MapsRoute';
+import { CheckingAuth } from "../ui/";
+import { useCheckAuth } from "../hooks";
+import { MapsRoute } from "../maps/routes/MapsRoute";
+import { AuthRoutes } from "../auth/routes/AuthRoutes";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 
 export const AppRouter = () => {
-
+  
   const status = useCheckAuth();
 
-  if ( status === 'checking' ) {
-    return <CheckingAuth />
+  if (status === "checking") {
+    return <CheckingAuth />;
   }
 
   return (
+
     <Routes>
-      {status === 'authenticated' ? (
+      {status === "authenticated" ? (
         <Route path="/*" element={<MapsRoute />} />
       ) : (
         <Route path="/auth/*" element={<AuthRoutes />} />
